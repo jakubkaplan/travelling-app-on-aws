@@ -81,6 +81,10 @@ target/
 profile_default/
 ipython_config.py
 
+# IDEA / Pycharm
+.idea
+travelling-app-on-aws.iml
+
 # pyenv
 .python-version
 
