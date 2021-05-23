@@ -10,6 +10,29 @@ dynamodb = boto3.resource('dynamodb', aws_access_key_id=ACCESS_KEY,
                           aws_secret_access_key=SECRET_KEY,
                           region_name="us-east-1")
 
+
+# Travel Destinations DB design
+#
+# Use cases:
+# P0:
+# -I view all travel destinations
+# -I view all travel destinations for which optimal quarter is Q1/Q2/Q3/Q4, ordered by priority ascending
+#
+# P1:
+# -I view top priority destinations for which optimal quarter is TK
+#
+# I can save a travel destination with ID, name, priority, quarter, country, state, description
+#
+# Primary key
+# HASH Key: DestinationID
+# Sort Key: None
+#
+# Optimal Quarter GSI
+# HASH Key: optimal_quarter
+# Sort key: priority
+#
+
+
 try:
     dynamodb.create_table(
         AttributeDefinitions=[
