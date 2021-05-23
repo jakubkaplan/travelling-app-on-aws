@@ -3,7 +3,7 @@
 {% block content %}
     <h1>{% block title %} Welcome to Travel Planning App {%endblock%}</h1>
     {% for destination in travelDestinations %}
-        <a href="#">
+        <a href="{{ url_for('destination', destination_id=destination['DestinationID'])}}">
             <h2>{{destination['DestinationName']}}</h2>
         </a>
         <span class="badge badge-primary"> Optimal quarter: {{destination['OptimalQuarter']}}</span>
