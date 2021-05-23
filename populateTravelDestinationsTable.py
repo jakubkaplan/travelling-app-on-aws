@@ -19,7 +19,8 @@ try:
                         'Item':{
                             'DestinationID':'BigBendNP43290342',
                             'OptimalQuarter':'Q1',
-                            'Priority': 2
+                            'Priority': 2,
+                            'DestinationName':'Big Bend National Park'
                         }
                     }
                 },
@@ -28,7 +29,8 @@ try:
                         'Item':{
                             'DestinationID':'SaguaroNP9059834',
                             'OptimalQuarter':'Q1',
-                            'Priority': 4
+                            'Priority': 4,
+                            'DestinationName':'Saguaro National Park'
                         }
                     }
                 }
