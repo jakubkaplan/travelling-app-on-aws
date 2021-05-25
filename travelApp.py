@@ -11,9 +11,24 @@ dynamodb = boto3.resource('dynamodb', aws_access_key_id=ACCESS_KEY,
 travel_destinations_table = dynamodb.Table('TravelDestinations')
 
 
+class Destination:
+    def __init__(self, destination_id, optimal_quarter, priority, name):
+        self.destination_id = destination_id
+        self.optimal_quarter = optimal_quarter
+        self.priority = priority
+        self.name = name
+
+
+def convert_ddb_item_to_destination(item):
+    return Destination(destination_id=item["DestinationID"],
+                       optimal_quarter=item["OptimalQuarter"],
+                       priority=item["Priority"],
+                       name=item["DestinationName"])
+
+
 def get_all_destinations():
-    all_travel_destinations = travel_destinations_table.scan()['Items']
-    return all_travel_destinations
+    _all_travel_destinations = [convert_ddb_item_to_destination(item) for item in travel_destinations_table.scan()['Items']]
+    return _all_travel_destinations
 
 
 def get_destination(destination_id):
@@ -24,7 +39,7 @@ def get_destination(destination_id):
     )
     if "Item" not in response:
         abort(404)
-    return response["Item"]
+    return convert_ddb_item_to_destination(response["Item"])
 
 
 all_travel_destinations = get_all_destinations()

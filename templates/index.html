@@ -3,11 +3,11 @@
 {% block content %}
     <h1>{% block title %} Welcome to Travel Planning App {%endblock%}</h1>
     {% for destination in travelDestinations %}
-        <a href="{{ url_for('destination', destination_id=destination['DestinationID'])}}">
-            <h2>{{destination['DestinationName']}}</h2>
+        <a href="{{ url_for('destination', destination_id=destination.destination_id)}}">
+            <h2>{{destination.name}}</h2>
         </a>
-        <span class="badge badge-primary"> Optimal quarter: {{destination['OptimalQuarter']}}</span>
-        <span class="badge badge-secondary"> Priority: {{destination['Priority']}}</span>
+        <span class="badge badge-primary"> Optimal quarter: {{destination.optimal_quarter}}</span>
+        <span class="badge badge-secondary"> Priority: {{destination.priority}}</span>
         <hr>
     {% endfor %}
 {% endblock %}

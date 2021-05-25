@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{% block title %} {{destination['DestinationName']}} {% endblock %} </h1>
-<span class="badge badge-primary"> Optimal quarter: {{destination['OptimalQuarter']}}</span>
-<span class="badge badge-secondary"> Priority: {{destination['Priority']}}</span>
+<h1>{% block title %} {{destination.name}} {% endblock %} </h1>
+<span class="badge badge-primary"> Optimal quarter: {{destination.optimal_quarter}}</span>
+<span class="badge badge-secondary"> Priority: {{destination.priority}}</span>
 <hr>
 {% endblock %}
