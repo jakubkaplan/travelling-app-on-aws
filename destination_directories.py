@@ -3,6 +3,10 @@ import os
 import boto3
 from werkzeug.exceptions import abort
 
+DESTINATION_NAME = "DestinationName"
+PRIORITY = "Priority"
+OPTIMAL_QUARTER = "OptimalQuarter"
+DESTINATION_ID = "DestinationID"
 ACCESS_KEY = "ACCESS_KEY"
 SECRET_KEY = "SECRET_KEY"
 REGION_NAME = "us-east-1"
@@ -17,10 +21,10 @@ class DynamoDestinationDirectory:
 
     @staticmethod
     def convert_ddb_item_to_destination(item):
-        return Destination(destination_id=item["DestinationID"],
-                           optimal_quarter=item["OptimalQuarter"],
-                           priority=item["Priority"],
-                           name=item["DestinationName"])
+        return Destination(destination_id=item[DESTINATION_ID],
+                           optimal_quarter=item[OPTIMAL_QUARTER],
+                           priority=item[PRIORITY],
+                           name=item[DESTINATION_NAME])
 
     def get_all_destinations(self):
         _all_travel_destinations = [DynamoDestinationDirectory.convert_ddb_item_to_destination(item) for item in
