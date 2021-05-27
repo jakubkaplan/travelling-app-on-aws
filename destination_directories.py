@@ -1,21 +1,20 @@
-import os
-
 import boto3
 from werkzeug.exceptions import abort
+
+from credentials import AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID
 
 DESTINATION_NAME = "DestinationName"
 PRIORITY = "Priority"
 OPTIMAL_QUARTER = "OptimalQuarter"
 DESTINATION_ID = "DestinationID"
-ACCESS_KEY = "ACCESS_KEY"
-SECRET_KEY = "SECRET_KEY"
+
 REGION_NAME = "us-east-1"
 
 
 class DynamoDestinationDirectory:
     def __init__(self):
-        dynamodb = boto3.resource('dynamodb', aws_access_key_id=(os.getenv(ACCESS_KEY)),
-                                  aws_secret_access_key=(os.getenv(SECRET_KEY)),
+        dynamodb = boto3.resource('dynamodb', aws_access_key_id=AWS_ACCESS_KEY_ID,
+                                  aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                                   region_name=REGION_NAME)
         self.travel_destinations_table = dynamodb.Table('TravelDestinations')
 
