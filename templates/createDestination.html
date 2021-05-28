@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Add a new destination {% endblock %} </h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="destination_name">Destination name</label>
+        <input type="text" name="destinationName"
+               placeholder="Destination name" class="form-control"
+               value="{{ request.form['destination_name'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="optimal_quarter">Optimal Quarter</label>
+        <input type="text" name="optimalQuarter"
+               placeholder="Optimal Quarter" class="form-control"
+               value="{{ request.form['optimal_quarter'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="priority">Priority</label>
+        <input type="text" name="priority"
+               placeholder="Priority" class="form-control"
+               value="{{ request.form['priority'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<hr>
+{% endblock %}

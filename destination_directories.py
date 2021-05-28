@@ -1,4 +1,5 @@
 import boto3
+import random
 from werkzeug.exceptions import abort
 
 from credentials import AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID
@@ -9,6 +10,14 @@ OPTIMAL_QUARTER = "OptimalQuarter"
 DESTINATION_ID = "DestinationID"
 
 REGION_NAME = "us-east-1"
+
+
+class Destination:
+    def __init__(self, destination_id, optimal_quarter, priority: int, name):
+        self.destination_id = destination_id
+        self.optimal_quarter = optimal_quarter
+        self.priority = priority
+        self.name = name
 
 
 class DynamoDestinationDirectory:
@@ -40,10 +49,19 @@ class DynamoDestinationDirectory:
             abort(404)
         return DynamoDestinationDirectory.convert_ddb_item_to_destination(response["Item"])
 
+    def add_new_destination(self, optimal_quarter, priority, name):
+        destination_id = DynamoDestinationDirectory.generateDestinationID(destination_name=name)
+        destination = Destination(destination_id=destination_id, optimal_quarter=optimal_quarter, priority=priority,
+                                  name=name)
+        self.travel_destinations_table.put_item(Item=DynamoDestinationDirectory.
+                                                convertToDynamoItem(destination=destination))
 
-class Destination:
-    def __init__(self, destination_id, optimal_quarter, priority, name):
-        self.destination_id = destination_id
-        self.optimal_quarter = optimal_quarter
-        self.priority = priority
-        self.name = name
+    @staticmethod
+    def generateDestinationID(destination_name):
+        return destination_name + str(random.randint(0, 100000))
+
+    @staticmethod
+    def convertToDynamoItem(destination):
+        dynamo_item = {DESTINATION_ID: destination.destination_id, OPTIMAL_QUARTER: destination.optimal_quarter,
+                       PRIORITY: destination.priority, DESTINATION_NAME: destination.name}
+        return dynamo_item
