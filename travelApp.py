@@ -19,12 +19,12 @@ def destination(destination_id):
     return render_template('destination.html', destination=destination_directory.get_destination(destination_id))
 
 
-@app.route("/destination/create", methods=("GET", "POST"))
-def create():
+@app.route("/create-destination", methods=("GET", "POST"))
+def create_destination():
     if request.method == "POST":
         destination_name = request.form["destinationName"]
         optimal_quarter = request.form["optimalQuarter"]
-        priority = int(request.form["priority"])
+        priority = request.form["priority"]
 
         if not destination_name:
             flash("Destination name is required!")
@@ -33,7 +33,6 @@ def create():
         elif not priority:
             flash("Priority is required!")
         else:
-            destination_directory.add_new_destination(optimal_quarter=optimal_quarter, priority=priority,
+            destination_directory.add_new_destination(optimal_quarter=optimal_quarter, priority=int(priority),
                                                       name=destination_name)
-
     return render_template("createDestination.html")
