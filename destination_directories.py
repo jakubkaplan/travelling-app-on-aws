@@ -50,14 +50,23 @@ class DynamoDestinationDirectory:
         return DynamoDestinationDirectory.convert_ddb_item_to_destination(response["Item"])
 
     def add_new_destination(self, optimal_quarter, priority, name):
-        destination_id = DynamoDestinationDirectory.generateDestinationID(destination_name=name)
+        destination_id = DynamoDestinationDirectory.createNewDestinationId(destination_name=name)
         destination = Destination(destination_id=destination_id, optimal_quarter=optimal_quarter, priority=priority,
                                   name=name)
         self.travel_destinations_table.put_item(Item=DynamoDestinationDirectory.
                                                 convertToDynamoItem(destination=destination))
 
+    # Returns number of items deleted
+    def delete_destination(self, destination_id):
+        deleted_item = self.travel_destinations_table.delete_item(Key={DESTINATION_ID: destination_id},
+                                                                  ReturnValues='ALL_OLD')
+        if "Attributes" in deleted_item:
+            return 1
+        else:
+            return 0
+
     @staticmethod
-    def generateDestinationID(destination_name):
+    def createNewDestinationId(destination_name):
         return destination_name + str(random.randint(0, 100000))
 
     @staticmethod
