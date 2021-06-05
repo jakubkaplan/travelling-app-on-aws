@@ -2,7 +2,7 @@ import boto3
 import random
 from werkzeug.exceptions import abort
 from boto3.dynamodb.conditions import Key
-from credentials import AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID
+from dynamoDbResource import create_dynamodb_resource_instance
 
 DESTINATION_NAME = "DestinationName"
 PRIORITY = "Priority"
@@ -29,9 +29,7 @@ class DestinationGrouping:
 
 class DynamoDestinationDirectory:
     def __init__(self):
-        dynamodb = boto3.resource('dynamodb', aws_access_key_id=AWS_ACCESS_KEY_ID,
-                                  aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                                  region_name=REGION_NAME)
+        dynamodb = create_dynamodb_resource_instance()
         self.travel_destinations_table = dynamodb.Table('TravelDestinations')
 
     @staticmethod
