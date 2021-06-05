@@ -2,12 +2,22 @@
 
 {% block content %}
     <h1>{% block title %} Welcome to Travel Planning App {%endblock%}</h1>
-    {% for destination in travelDestinations %}
-        <a href="{{ url_for('destination', destination_id=destination.destination_id)}}">
-            <h2>{{destination.name}}</h2>
-        </a>
-        <span class="badge badge-primary"> Optimal quarter: {{destination.optimal_quarter}}</span>
-        <span class="badge badge-secondary"> Priority: {{destination.priority}}</span>
-        <hr>
+    {% for group in destinationGrouping %}
+        <div class ="card" style="border-bottom-width: 10px">
+            <div class="card-body">
+                <h2 class="card-title">{{group.name}}</h2>
+                {% for destination in group.destinations %}
+                <a href="{{ url_for('destination', destination_id=destination.destination_id)}}">
+                    <h3>{{destination.name}}</h3>
+                </a>
+                <span class="badge badge-primary"> Optimal quarter: {{destination.optimal_quarter}}</span>
+                <span class="badge badge-secondary"> Priority: {{destination.priority}}</span>
+                <hr>
+                {% endfor %}
+            </div>
+
+        </div>
     {% endfor %}
 {% endblock %}
+
+

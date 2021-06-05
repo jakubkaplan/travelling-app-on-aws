@@ -10,7 +10,7 @@ app.config['SECRET_KEY'] = FLASK_SECRET_KEY
 
 @app.route("/")
 def index():
-    return render_template('index.html', travelDestinations=destination_directory.get_all_destinations())
+    return render_template('index.html', destinationGrouping=destination_directory.get_top_destinations_by_quarter())
 
 
 @app.route("/destination/<destination_id>", methods=["GET"])

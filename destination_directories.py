@@ -1,15 +1,16 @@
 import boto3
 import random
 from werkzeug.exceptions import abort
-
+from boto3.dynamodb.conditions import Key
 from credentials import AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID
 
 DESTINATION_NAME = "DestinationName"
 PRIORITY = "Priority"
 OPTIMAL_QUARTER = "OptimalQuarter"
 DESTINATION_ID = "DestinationID"
-
+ALL_QUARTERS = ["Q1", "Q2", "Q3", "Q4"]
 REGION_NAME = "us-east-1"
+MAX_NUMBER_OF_DESTINATIONS_PER_QUARTER = 3
 
 
 class Destination:
@@ -18,6 +19,12 @@ class Destination:
         self.optimal_quarter = optimal_quarter
         self.priority = priority
         self.name = name
+
+
+class DestinationGrouping:
+    def __init__(self, name, destinations):
+        self.name = name
+        self.destinations = destinations
 
 
 class DynamoDestinationDirectory:
@@ -38,6 +45,21 @@ class DynamoDestinationDirectory:
         _all_travel_destinations = [DynamoDestinationDirectory.convert_ddb_item_to_destination(item) for item in
                                     self.travel_destinations_table.scan()['Items']]
         return _all_travel_destinations
+
+    def get_top_destinations_by_quarter(self):
+        groupings_for_all_quarters = []
+        for quarter in ALL_QUARTERS:
+            response = self.travel_destinations_table.query(
+                IndexName='OptimalQuarterGSI',
+                KeyConditionExpression=Key('OptimalQuarter').eq(quarter),
+                Limit=MAX_NUMBER_OF_DESTINATIONS_PER_QUARTER
+            )
+            destinations = [DynamoDestinationDirectory.convert_ddb_item_to_destination(item) for item in
+                            response['Items']]
+            destination_grouping = DestinationGrouping(name=quarter, destinations=destinations)
+            groupings_for_all_quarters.append(destination_grouping)
+
+        return groupings_for_all_quarters
 
     def get_destination(self, destination_id):
         response = self.travel_destinations_table.get_item(
